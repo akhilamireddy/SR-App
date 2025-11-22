@@ -2,6 +2,7 @@
   "name": "shift-roster-app",
   "private": true,
   "version": "0.0.0",
+  "homepage": "https://akhilamireddy.github.io/SR-App",
   "type": "module",
   "scripts": {
     "dev": "vite",

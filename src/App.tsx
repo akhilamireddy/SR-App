@@ -32,8 +32,8 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gray-50">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-indigo-600"></div>
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-white"></div>
       </div>
     );
   }
@@ -43,24 +43,25 @@ function App() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      {/* Header */}
-      <header className="bg-white shadow-sm sticky top-0 z-10">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-          <div className="flex items-center gap-2">
-            <div className="bg-indigo-600 p-2 rounded-lg">
+    <div className="min-h-screen">
+      {/* Glass Header */}
+      <header className="sticky top-4 z-50 px-4 sm:px-6 lg:px-8 mb-8">
+        <div className="max-w-7xl mx-auto glass-card rounded-2xl px-6 h-20 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="bg-gradient-to-br from-indigo-500 to-purple-600 p-2.5 rounded-xl shadow-lg shadow-indigo-500/20">
               <Calendar className="w-6 h-6 text-white" />
             </div>
-            <h1 className="text-xl font-bold text-gray-900">Shift Roster Pro</h1>
+            <h1 className="text-xl font-bold text-white tracking-tight">Shift Roster Pro</h1>
           </div>
 
-          <div className="flex items-center gap-4">
-            <span className="text-sm text-gray-600 hidden md:block">
-              {user.email}
-            </span>
+          <div className="flex items-center gap-6">
+            <div className="hidden md:flex flex-col items-end">
+              <span className="text-sm font-medium text-white">Administrator</span>
+              <span className="text-xs text-indigo-200">{user.email}</span>
+            </div>
             <button
               onClick={handleLogout}
-              className="p-2 text-gray-500 hover:text-red-600 transition-colors"
+              className="p-2.5 rounded-xl text-indigo-100 hover:bg-white/10 hover:text-white transition-all border border-transparent hover:border-white/10"
               title="Sign Out"
             >
               <LogOut className="w-5 h-5" />
@@ -70,16 +71,16 @@ function App() {
       </header>
 
       {/* Main Content */}
-      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Navigation Tabs */}
-        <div className="flex space-x-1 bg-white p-1 rounded-xl shadow-sm mb-8 w-fit mx-auto border border-gray-100">
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+        {/* Glass Navigation Tabs */}
+        <div className="glass-card p-1.5 rounded-2xl mb-8 w-fit mx-auto flex space-x-1">
           <button
             onClick={() => setCurrentView('team')}
             className={clsx(
-              'flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
+              'flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300',
               currentView === 'team'
-                ? 'bg-indigo-50 text-indigo-700 shadow-sm ring-1 ring-indigo-200'
-                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                ? 'bg-white/15 text-white shadow-lg border border-white/10'
+                : 'text-indigo-200 hover:text-white hover:bg-white/5'
             )}
           >
             <Users className="w-4 h-4" />
@@ -88,10 +89,10 @@ function App() {
           <button
             onClick={() => setCurrentView('config')}
             className={clsx(
-              'flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
+              'flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300',
               currentView === 'config'
-                ? 'bg-indigo-50 text-indigo-700 shadow-sm ring-1 ring-indigo-200'
-                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                ? 'bg-white/15 text-white shadow-lg border border-white/10'
+                : 'text-indigo-200 hover:text-white hover:bg-white/5'
             )}
           >
             <Settings className="w-4 h-4" />
@@ -100,10 +101,10 @@ function App() {
           <button
             onClick={() => setCurrentView('roster')}
             className={clsx(
-              'flex items-center gap-2 px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200',
+              'flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-300',
               currentView === 'roster'
-                ? 'bg-indigo-50 text-indigo-700 shadow-sm ring-1 ring-indigo-200'
-                : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                ? 'bg-white/15 text-white shadow-lg border border-white/10'
+                : 'text-indigo-200 hover:text-white hover:bg-white/5'
             )}
           >
             <Calendar className="w-4 h-4" />

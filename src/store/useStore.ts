@@ -298,6 +298,18 @@ export const useStore = create<AppState>((set, get) => ({
             }
         });
 
+        // Helper to shuffle array (Fisher-Yates)
+        const shuffleArray = <T>(array: T[]): T[] => {
+            const newArray = [...array];
+            for (let i = newArray.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+            }
+            return newArray;
+        };
+
+        // ... (assignments clearing logic)
+
         // 3. Fill remaining slots with Logic
         (['Morning', 'Afternoon', 'Night'] as ShiftType[]).forEach(shift => {
             const limit = team.shiftRequirements[shift];
@@ -307,10 +319,11 @@ export const useStore = create<AppState>((set, get) => ({
             if (needed <= 0) return;
 
             // Get available users split by WeekOffType
-            const available = teamUsers.filter(u =>
+            // Shuffle available users first to ensure randomness
+            const available = shuffleArray(teamUsers.filter(u =>
                 unassignedUsers.has(u.id) &&
                 !isRotationViolation(u.id, shift)
-            );
+            ));
 
             const type1Users = available.filter(u => u.weekOffType === 'type1'); // Fri-Sat
             const type2Users = available.filter(u => u.weekOffType === 'type2'); // Sun-Mon
@@ -346,10 +359,10 @@ export const useStore = create<AppState>((set, get) => ({
             const currentCount = newAssignments.filter(a => a.shiftType === shift).length;
             if (currentCount < limit) {
                 const needed = limit - currentCount;
-                const available = teamUsers.filter(u =>
+                const available = shuffleArray(teamUsers.filter(u =>
                     unassignedUsers.has(u.id) &&
                     !isRotationViolation(u.id, shift)
-                );
+                ));
                 available.slice(0, needed).forEach(u => assign(u.id, shift));
             }
         });

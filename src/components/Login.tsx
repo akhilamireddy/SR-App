@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import { signInWithEmailAndPassword } from 'firebase/auth';
 import { auth } from '../firebase';
-import { LogIn, AlertCircle } from 'lucide-react';
+import { signInWithEmailAndPassword } from 'firebase/auth';
+import { Lock, Mail, Loader2, Sparkles } from 'lucide-react';
 
 export const Login: React.FC = () => {
     const [email, setEmail] = useState('');
@@ -11,76 +11,94 @@ export const Login: React.FC = () => {
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
-        setError('');
         setLoading(true);
-
+        setError('');
         try {
             await signInWithEmailAndPassword(auth, email, password);
         } catch (err: any) {
-            console.error(err);
-            setError('Failed to login. Please check your email and password.');
+            console.error("Login Error:", err);
+            setError('Invalid email or password. Please try again.');
         } finally {
             setLoading(false);
         }
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
-            <div className="bg-white rounded-2xl shadow-xl p-8 w-full max-w-md border border-gray-100">
-                <div className="flex flex-col items-center mb-8">
-                    <div className="w-16 h-16 bg-indigo-600 rounded-2xl flex items-center justify-center mb-4 shadow-lg transform rotate-3">
-                        <LogIn className="w-8 h-8 text-white" />
+        <div className="min-h-screen flex items-center justify-center p-4">
+            <div className="w-full max-w-md">
+                {/* Logo / Brand */}
+                <div className="text-center mb-8">
+                    <div className="inline-flex items-center justify-center w-16 h-16 rounded-2xl bg-gradient-to-br from-indigo-500 to-purple-600 shadow-lg shadow-indigo-500/30 mb-4">
+                        <Sparkles className="w-8 h-8 text-white" />
                     </div>
-                    <h1 className="text-2xl font-bold text-gray-800">Welcome Back</h1>
-                    <p className="text-gray-500 text-sm mt-2">Sign in to manage your shift roster</p>
+                    <h1 className="text-4xl font-bold text-white mb-2 tracking-tight">Shift Roster</h1>
+                    <p className="text-gray-400">Manage your team's schedule with ease</p>
                 </div>
 
-                {error && (
-                    <div className="mb-6 bg-red-50 border-l-4 border-red-500 p-4 rounded-r-lg flex items-start gap-3">
-                        <AlertCircle className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" />
-                        <p className="text-sm text-red-700">{error}</p>
-                    </div>
-                )}
+                {/* Glass Card */}
+                <div className="glass-card rounded-2xl p-8">
+                    <form onSubmit={handleLogin} className="space-y-6">
+                        {error && (
+                            <div className="p-4 rounded-lg bg-red-500/10 border border-red-500/20 text-red-200 text-sm flex items-center gap-2">
+                                <div className="w-1.5 h-1.5 rounded-full bg-red-400" />
+                                {error}
+                            </div>
+                        )}
 
-                <form onSubmit={handleLogin} className="space-y-6">
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Email Address</label>
-                        <input
-                            type="email"
-                            required
-                            value={email}
-                            onChange={(e) => setEmail(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-gray-50 focus:bg-white"
-                            placeholder="admin@example.com"
-                        />
-                    </div>
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-300 ml-1">Email Address</label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <Mail className="h-5 w-5 text-gray-400 group-focus-within:text-indigo-400 transition-colors" />
+                                </div>
+                                <input
+                                    type="email"
+                                    value={email}
+                                    onChange={(e) => setEmail(e.target.value)}
+                                    className="glass-input w-full pl-11 pr-4 py-3 rounded-xl outline-none"
+                                    placeholder="admin@company.com"
+                                    required
+                                />
+                            </div>
+                        </div>
 
-                    <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Password</label>
-                        <input
-                            type="password"
-                            required
-                            value={password}
-                            onChange={(e) => setPassword(e.target.value)}
-                            className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all bg-gray-50 focus:bg-white"
-                            placeholder="••••••••"
-                        />
-                    </div>
+                        <div className="space-y-2">
+                            <label className="text-sm font-medium text-gray-300 ml-1">Password</label>
+                            <div className="relative group">
+                                <div className="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                    <Lock className="h-5 w-5 text-gray-400 group-focus-within:text-indigo-400 transition-colors" />
+                                </div>
+                                <input
+                                    type="password"
+                                    value={password}
+                                    onChange={(e) => setPassword(e.target.value)}
+                                    className="glass-input w-full pl-11 pr-4 py-3 rounded-xl outline-none"
+                                    placeholder="••••••••"
+                                    required
+                                />
+                            </div>
+                        </div>
 
-                    <button
-                        type="submit"
-                        disabled={loading}
-                        className="w-full bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-4 rounded-xl transition-all transform hover:scale-[1.02] active:scale-[0.98] shadow-md disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                        {loading ? 'Signing in...' : 'Sign In'}
-                    </button>
-                </form>
-
-                <div className="mt-6 text-center">
-                    <p className="text-xs text-gray-400">
-                        Contact your administrator if you don't have an account.
-                    </p>
+                        <button
+                            type="submit"
+                            disabled={loading}
+                            className="glass-button w-full py-3.5 rounded-xl font-semibold text-white flex items-center justify-center gap-2 mt-2 disabled:opacity-70 disabled:cursor-not-allowed"
+                        >
+                            {loading ? (
+                                <>
+                                    <Loader2 className="w-5 h-5 animate-spin" />
+                                    Signing in...
+                                </>
+                            ) : (
+                                'Sign In'
+                            )}
+                        </button>
+                    </form>
                 </div>
+
+                <p className="text-center mt-8 text-sm text-gray-500">
+                    Need an account? Contact your administrator.
+                </p>
             </div>
         </div>
     );

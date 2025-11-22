@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { useStore, type ShiftType } from '../store/useStore';
-import { Calendar, RefreshCw, Download } from 'lucide-react';
+import { Calendar, RefreshCw, Download, ChevronDown } from 'lucide-react';
 import clsx from 'clsx';
 import * as XLSX from 'xlsx';
 
@@ -76,52 +76,69 @@ export const RosterView: React.FC = () => {
 
     return (
         <div className="space-y-8">
-            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6 flex items-center gap-2">
-                    <Calendar className="w-6 h-6 text-indigo-600" />
+            <div className="glass-card rounded-2xl p-8">
+                <h2 className="text-2xl font-bold text-white mb-8 flex items-center gap-3">
+                    <div className="p-2 rounded-lg bg-indigo-500/20">
+                        <Calendar className="w-6 h-6 text-indigo-300" />
+                    </div>
                     Roster Generation
                 </h2>
 
                 {/* Controls */}
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Select Team</label>
-                        <select
-                            value={selectedTeamId}
-                            onChange={(e) => setSelectedTeamId(e.target.value)}
-                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
-                        >
-                            <option value="">Select a team...</option>
-                            {teams.map((team) => (
-                                <option key={team.id} value={team.id}>{team.name}</option>
-                            ))}
-                        </select>
+                        <label className="block text-sm font-medium text-indigo-200 mb-2 ml-1">Select Team</label>
+                        <div className="relative">
+                            <select
+                                value={selectedTeamId}
+                                onChange={(e) => setSelectedTeamId(e.target.value)}
+                                className="glass-input w-full appearance-none py-3 px-4 pr-8 rounded-xl leading-tight outline-none font-medium cursor-pointer"
+                            >
+                                <option value="" className="bg-slate-800 text-gray-400">Select a team...</option>
+                                {teams.map((team) => (
+                                    <option key={team.id} value={team.id} className="bg-slate-800 text-white">{team.name}</option>
+                                ))}
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-indigo-200">
+                                <ChevronDown className="w-4 h-4" />
+                            </div>
+                        </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Month</label>
-                        <select
-                            value={selectedMonth}
-                            onChange={(e) => setSelectedMonth(Number(e.target.value))}
-                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
-                        >
-                            {months.map((m, idx) => (
-                                <option key={idx} value={idx}>{m}</option>
-                            ))}
-                        </select>
+                        <label className="block text-sm font-medium text-indigo-200 mb-2 ml-1">Month</label>
+                        <div className="relative">
+                            <select
+                                value={selectedMonth}
+                                onChange={(e) => setSelectedMonth(Number(e.target.value))}
+                                className="glass-input w-full appearance-none py-3 px-4 pr-8 rounded-xl leading-tight outline-none font-medium cursor-pointer"
+                            >
+                                {months.map((m, idx) => (
+                                    <option key={idx} value={idx} className="bg-slate-800 text-white">{m}</option>
+                                ))}
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-indigo-200">
+                                <ChevronDown className="w-4 h-4" />
+                            </div>
+                        </div>
                     </div>
 
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Year</label>
-                        <select
-                            value={selectedYear}
-                            onChange={(e) => setSelectedYear(Number(e.target.value))}
-                            className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 outline-none transition-all"
-                        >
-                            {years.map((y) => (
-                                <option key={y} value={y}>{y}</option>
-                            ))}
-                        </select>
+                        <label className="block text-sm font-medium text-indigo-200 mb-2 ml-1">Year</label>
+                        <div className="relative">
+                            <select
+                                value={selectedYear}
+                                onChange={(e) => setSelectedYear(Number(e.target.value))}
+                                className="glass-input w-full appearance-none py-3 px-4 pr-8 rounded-xl leading-tight outline-none font-medium cursor-pointer"
+                            >
+                                {years.map((y) => (
+                                    <option key={y} value={y} className="bg-slate-800 text-white">{y}</option>
+                                ))}
+                            </select>
+                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-4 text-indigo-200">
+                                <ChevronDown className="w-4 h-4" />
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -129,28 +146,28 @@ export const RosterView: React.FC = () => {
                     <>
                         {/* Preferences Section */}
                         <div className="mb-8">
-                            <h3 className="text-lg font-semibold text-gray-800 mb-4">User Preferences</h3>
-                            <div className="bg-gray-50 rounded-xl p-4 border border-gray-200">
+                            <h3 className="text-lg font-semibold text-white mb-4 ml-1">User Preferences</h3>
+                            <div className="bg-white/5 rounded-2xl p-6 border border-white/5 backdrop-blur-sm">
                                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
                                     {teamUsers.map((user) => {
                                         const pref = getPreference(user.id);
                                         return (
-                                            <div key={user.id} className="bg-white p-3 rounded-lg shadow-sm border border-gray-100 flex items-center justify-between">
-                                                <div className="flex items-center gap-2">
-                                                    <div className="w-8 h-8 rounded-full bg-indigo-100 flex items-center justify-center text-indigo-600 font-bold text-xs">
+                                            <div key={user.id} className="bg-white/5 p-3 rounded-xl border border-white/5 flex items-center justify-between hover:bg-white/10 transition-colors">
+                                                <div className="flex items-center gap-3">
+                                                    <div className="w-8 h-8 rounded-lg bg-indigo-500/20 flex items-center justify-center text-indigo-300 font-bold text-xs border border-indigo-500/30">
                                                         {user.name.substring(0, 2).toUpperCase()}
                                                     </div>
-                                                    <span className="font-medium text-gray-700">{user.name}</span>
+                                                    <span className="font-medium text-indigo-100">{user.name}</span>
                                                 </div>
                                                 <select
                                                     value={pref?.shiftType || ''}
                                                     onChange={(e) => handlePreferenceChange(user.id, e.target.value)}
-                                                    className="text-sm border-gray-200 rounded-md focus:ring-indigo-500 focus:border-indigo-500"
+                                                    className="text-sm bg-black/20 border-white/10 text-indigo-200 rounded-lg focus:ring-indigo-500/50 focus:border-indigo-500/50 py-1.5 px-2 outline-none cursor-pointer hover:bg-black/30 transition-colors"
                                                 >
-                                                    <option value="">No Pref</option>
-                                                    <option value="Morning">Morning</option>
-                                                    <option value="Afternoon">Afternoon</option>
-                                                    <option value="Night">Night</option>
+                                                    <option value="" className="bg-slate-800">No Pref</option>
+                                                    <option value="Morning" className="bg-slate-800">Morning</option>
+                                                    <option value="Afternoon" className="bg-slate-800">Afternoon</option>
+                                                    <option value="Night" className="bg-slate-800">Night</option>
                                                 </select>
                                             </div>
                                         );
@@ -160,17 +177,17 @@ export const RosterView: React.FC = () => {
                         </div>
 
                         {/* Action */}
-                        <div className="flex justify-end gap-3 mb-8">
+                        <div className="flex justify-end gap-4 mb-8">
                             <button
                                 onClick={handleExport}
-                                className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center gap-2 shadow-md"
+                                className="px-6 py-2.5 rounded-xl bg-emerald-600/20 text-emerald-300 border border-emerald-500/30 hover:bg-emerald-600/30 font-semibold transition-all flex items-center gap-2"
                             >
                                 <Download className="w-5 h-5" />
                                 Export to Excel
                             </button>
                             <button
                                 onClick={handleGenerate}
-                                className="bg-indigo-600 hover:bg-indigo-700 text-white font-semibold py-2 px-6 rounded-lg transition-colors flex items-center gap-2 shadow-md"
+                                className="glass-button px-6 py-2.5 rounded-xl font-semibold flex items-center gap-2"
                             >
                                 <RefreshCw className="w-5 h-5" />
                                 Generate Roster
@@ -178,34 +195,36 @@ export const RosterView: React.FC = () => {
                         </div>
 
                         {/* Results Table */}
-                        <div className="overflow-hidden rounded-xl border border-gray-200 shadow-sm">
-                            <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
+                        <div className="overflow-hidden rounded-2xl border border-white/10 shadow-lg">
+                            <table className="min-w-full divide-y divide-white/10">
+                                <thead className="bg-white/5">
                                     <tr>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">User</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Week Off</th>
-                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Assigned Shift</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-indigo-200 uppercase tracking-wider">User</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-indigo-200 uppercase tracking-wider">Week Off</th>
+                                        <th className="px-6 py-4 text-left text-xs font-semibold text-indigo-200 uppercase tracking-wider">Assigned Shift</th>
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
+                                <tbody className="divide-y divide-white/5 bg-white/5 backdrop-blur-sm">
                                     {teamUsers.map((user) => {
                                         const assignment = getAssignment(user.id);
                                         return (
-                                            <tr key={user.id} className="hover:bg-gray-50 transition-colors">
+                                            <tr key={user.id} className="hover:bg-white/5 transition-colors">
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <div className="flex items-center">
-                                                        <div className="flex-shrink-0 h-8 w-8 rounded-full bg-gray-200 flex items-center justify-center text-gray-600 font-bold text-xs">
+                                                        <div className="flex-shrink-0 h-8 w-8 rounded-lg bg-white/10 flex items-center justify-center text-indigo-200 font-bold text-xs border border-white/5">
                                                             {user.name.substring(0, 2).toUpperCase()}
                                                         </div>
                                                         <div className="ml-4">
-                                                            <div className="text-sm font-medium text-gray-900">{user.name}</div>
+                                                            <div className="text-sm font-medium text-white">{user.name}</div>
                                                         </div>
                                                     </div>
                                                 </td>
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     <span className={clsx(
-                                                        "px-2 inline-flex text-xs leading-5 font-semibold rounded-full",
-                                                        user.weekOffType === 'type1' ? "bg-green-100 text-green-800" : "bg-blue-100 text-blue-800"
+                                                        "px-2.5 py-1 inline-flex text-xs leading-5 font-semibold rounded-lg border",
+                                                        user.weekOffType === 'type1'
+                                                            ? "bg-emerald-500/10 text-emerald-300 border-emerald-500/20"
+                                                            : "bg-amber-500/10 text-amber-300 border-amber-500/20"
                                                     )}>
                                                         {user.weekOffType === 'type1' ? 'Fri-Sat' : 'Sun-Mon'}
                                                     </span>
@@ -213,15 +232,15 @@ export const RosterView: React.FC = () => {
                                                 <td className="px-6 py-4 whitespace-nowrap">
                                                     {assignment ? (
                                                         <span className={clsx(
-                                                            "px-2 py-1 text-sm font-medium rounded-md",
-                                                            assignment.shiftType === 'Morning' && "bg-yellow-100 text-yellow-800",
-                                                            assignment.shiftType === 'Afternoon' && "bg-orange-100 text-orange-800",
-                                                            assignment.shiftType === 'Night' && "bg-indigo-100 text-indigo-800"
+                                                            "px-3 py-1 text-sm font-medium rounded-lg border",
+                                                            assignment.shiftType === 'Morning' && "bg-orange-500/10 text-orange-300 border-orange-500/20",
+                                                            assignment.shiftType === 'Afternoon' && "bg-amber-500/10 text-amber-300 border-amber-500/20",
+                                                            assignment.shiftType === 'Night' && "bg-indigo-500/10 text-indigo-300 border-indigo-500/20"
                                                         )}>
                                                             {assignment.shiftType}
                                                         </span>
                                                     ) : (
-                                                        <span className="text-gray-400 text-sm italic">Not Assigned</span>
+                                                        <span className="text-white/30 text-sm italic">Not Assigned</span>
                                                     )}
                                                 </td>
                                             </tr>

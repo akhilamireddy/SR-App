@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { useStore, type ShiftType } from '../store/useStore';
-import { Sun, Moon, Sunset, Users, AlertCircle, ChevronDown, Save, Edit2, X, Check } from 'lucide-react';
+import { Sun, Moon, Sunset, Users, AlertCircle, Save, Edit2, X, Check } from 'lucide-react';
 import clsx from 'clsx';
+import { GlassSelect } from './ui/GlassSelect';
 
 export const ShiftConfiguration: React.FC = () => {
     const { teams, users, updateTeamShiftRequirements } = useStore();
@@ -57,9 +58,9 @@ export const ShiftConfiguration: React.FC = () => {
 
     const getIcon = (shift: ShiftType) => {
         switch (shift) {
-            case 'Morning': return <Sun className="w-6 h-6 text-orange-500" />;
-            case 'Afternoon': return <Sunset className="w-6 h-6 text-amber-600" />;
-            case 'Night': return <Moon className="w-6 h-6 text-indigo-600" />;
+            case 'Morning': return <Sun className="w-6 h-6 text-orange-400" />;
+            case 'Afternoon': return <Sunset className="w-6 h-6 text-amber-400" />;
+            case 'Night': return <Moon className="w-6 h-6 text-indigo-400" />;
         }
     };
 
@@ -73,39 +74,31 @@ export const ShiftConfiguration: React.FC = () => {
 
     if (teams.length === 0) {
         return (
-            <div className="text-center py-12 bg-white rounded-2xl border border-gray-100 shadow-sm">
-                <Users className="w-12 h-12 mx-auto mb-3 text-gray-300" />
-                <h3 className="text-lg font-medium text-gray-900">No Teams Found</h3>
-                <p className="text-gray-500">Please create a team in the Team Management section first.</p>
+            <div className="text-center py-16 glass-card rounded-2xl">
+                <Users className="w-16 h-16 mx-auto mb-4 text-indigo-200/30" />
+                <h3 className="text-xl font-medium text-white">No Teams Found</h3>
+                <p className="text-indigo-200 mt-2">Please create a team in the Team Management section first.</p>
             </div>
         );
     }
 
     return (
         <div className="space-y-8">
-            <div className="bg-white rounded-2xl shadow-xl p-6 border border-gray-100">
+            <div className="glass-card rounded-2xl p-8">
 
                 {/* Team Selector */}
-                <div className="mb-8 flex flex-col md:flex-row md:items-end gap-4 justify-between">
+                <div className="mb-8 flex flex-col md:flex-row md:items-end gap-6 justify-between">
                     <div className="w-full md:w-1/3">
-                        <label className="block text-sm font-medium text-gray-700 mb-2">Select Project / Team</label>
-                        <div className="relative">
-                            <select
-                                value={selectedTeamId}
-                                onChange={(e) => {
-                                    setSelectedTeamId(e.target.value);
-                                    setIsEditing(false);
-                                }}
-                                className="w-full appearance-none bg-white border border-gray-200 text-gray-700 py-3 px-4 pr-8 rounded-lg leading-tight focus:outline-none focus:bg-white focus:border-indigo-500 font-medium"
-                            >
-                                {teams.map(team => (
-                                    <option key={team.id} value={team.id}>{team.name}</option>
-                                ))}
-                            </select>
-                            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
-                                <ChevronDown className="w-4 h-4" />
-                            </div>
-                        </div>
+                        <GlassSelect
+                            label="Select Project / Team"
+                            value={selectedTeamId}
+                            onChange={(val) => {
+                                setSelectedTeamId(val);
+                                setIsEditing(false);
+                            }}
+                            options={teams.map(team => ({ value: team.id, label: team.name }))}
+                            placeholder="Select a team..."
+                        />
                     </div>
 
                     {/* Action Buttons */}
@@ -114,14 +107,14 @@ export const ShiftConfiguration: React.FC = () => {
                             <>
                                 <button
                                     onClick={handleCancel}
-                                    className="px-4 py-2 rounded-lg border border-gray-200 text-gray-600 hover:bg-gray-50 font-medium flex items-center gap-2"
+                                    className="px-6 py-2.5 rounded-xl border border-white/10 text-indigo-200 hover:bg-white/5 hover:text-white font-medium flex items-center gap-2 transition-all"
                                 >
                                     <X className="w-4 h-4" />
                                     Cancel
                                 </button>
                                 <button
                                     onClick={handleSave}
-                                    className="px-4 py-2 rounded-lg bg-indigo-600 text-white hover:bg-indigo-700 font-medium flex items-center gap-2 shadow-sm"
+                                    className="glass-button px-6 py-2.5 rounded-xl font-medium flex items-center gap-2"
                                 >
                                     <Save className="w-4 h-4" />
                                     Save Changes
@@ -130,7 +123,7 @@ export const ShiftConfiguration: React.FC = () => {
                         ) : (
                             <button
                                 onClick={() => setIsEditing(true)}
-                                className="px-4 py-2 rounded-lg border border-indigo-200 text-indigo-700 bg-indigo-50 hover:bg-indigo-100 font-medium flex items-center gap-2"
+                                className="px-6 py-2.5 rounded-xl border border-indigo-400/30 text-indigo-300 bg-indigo-500/10 hover:bg-indigo-500/20 hover:text-white font-medium flex items-center gap-2 transition-all"
                             >
                                 <Edit2 className="w-4 h-4" />
                                 Edit Configuration
@@ -141,20 +134,24 @@ export const ShiftConfiguration: React.FC = () => {
 
                 {selectedTeam && (
                     <>
-                        <div className="flex justify-between items-start mb-6 border-t border-gray-100 pt-6">
+                        <div className="flex justify-between items-start mb-8 border-t border-white/10 pt-8">
                             <div>
-                                <h2 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-                                    <Users className="w-6 h-6 text-indigo-600" />
+                                <h2 className="text-2xl font-bold text-white flex items-center gap-3">
+                                    <div className="p-2 rounded-lg bg-indigo-500/20">
+                                        <Users className="w-6 h-6 text-indigo-300" />
+                                    </div>
                                     Shift Distribution for {selectedTeam.name}
                                 </h2>
-                                <p className="text-gray-500 mt-1">
+                                <p className="text-indigo-200/70 mt-2 ml-1">
                                     {isEditing ? "Adjust the numbers below." : "Current approved distribution."}
                                 </p>
                             </div>
 
                             <div className={clsx(
-                                "px-4 py-2 rounded-lg border flex items-center gap-2 transition-all duration-300",
-                                isBalanced ? "bg-green-50 border-green-200 text-green-700" : "bg-amber-50 border-amber-200 text-amber-700"
+                                "px-4 py-2 rounded-xl border flex items-center gap-2 transition-all duration-300 backdrop-blur-sm",
+                                isBalanced
+                                    ? "bg-emerald-500/10 border-emerald-500/20 text-emerald-300"
+                                    : "bg-amber-500/10 border-amber-500/20 text-amber-300"
                             )}>
                                 {isBalanced ? (
                                     <span className="font-medium flex items-center gap-2">
@@ -173,8 +170,10 @@ export const ShiftConfiguration: React.FC = () => {
                         </div>
 
                         {showSuccess && (
-                            <div className="mb-6 p-4 bg-green-50 text-green-700 rounded-xl border border-green-200 flex items-center gap-2 animate-in fade-in slide-in-from-top-2">
-                                <Check className="w-5 h-5" />
+                            <div className="mb-8 p-4 bg-emerald-500/10 text-emerald-300 rounded-xl border border-emerald-500/20 flex items-center gap-3 animate-in fade-in slide-in-from-top-2">
+                                <div className="p-1 rounded-full bg-emerald-500/20">
+                                    <Check className="w-4 h-4" />
+                                </div>
                                 Configuration saved successfully!
                             </div>
                         )}
@@ -182,31 +181,33 @@ export const ShiftConfiguration: React.FC = () => {
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                             {(['Morning', 'Afternoon', 'Night'] as ShiftType[]).map((shiftName) => (
                                 <div key={shiftName} className={clsx(
-                                    "rounded-xl p-6 border transition-all duration-300",
-                                    isEditing ? "bg-white border-indigo-200 shadow-md" : "bg-gray-50 border-gray-200"
+                                    "rounded-2xl p-6 border transition-all duration-300",
+                                    isEditing
+                                        ? "bg-white/10 border-indigo-400/30 shadow-lg shadow-indigo-500/10"
+                                        : "bg-white/5 border-white/5 hover:bg-white/10"
                                 )}>
-                                    <div className="flex items-center gap-3 mb-4">
-                                        <div className="p-3 bg-white rounded-lg shadow-sm">
+                                    <div className="flex items-center gap-4 mb-4">
+                                        <div className="p-3 bg-white/10 rounded-xl backdrop-blur-sm">
                                             {getIcon(shiftName)}
                                         </div>
                                         <div>
-                                            <h3 className="font-bold text-gray-900">{shiftName}</h3>
-                                            <span className="text-xs font-medium text-gray-500 uppercase tracking-wider">Shift</span>
+                                            <h3 className="font-bold text-white text-lg">{shiftName}</h3>
+                                            <span className="text-xs font-medium text-indigo-300 uppercase tracking-wider">Shift</span>
                                         </div>
                                     </div>
 
-                                    <p className="text-sm text-gray-600 mb-6 h-10">
+                                    <p className="text-sm text-indigo-200/70 mb-8 h-10 leading-relaxed">
                                         {getDescription(shiftName)}
                                     </p>
 
-                                    <div className="space-y-2">
-                                        <label className="text-sm font-medium text-gray-700">Required Staff</label>
-                                        <div className="flex items-center gap-3">
+                                    <div className="space-y-3">
+                                        <label className="text-sm font-medium text-indigo-200 ml-1">Required Staff</label>
+                                        <div className="flex items-center gap-2">
                                             {isEditing ? (
                                                 <>
                                                     <button
                                                         onClick={() => updateLocalConfig(shiftName, Math.max(0, localConfig[shiftName] - 1))}
-                                                        className="w-10 h-10 rounded-lg bg-gray-50 border border-gray-200 hover:border-indigo-500 hover:text-indigo-600 flex items-center justify-center font-bold text-lg transition-all"
+                                                        className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 hover:border-indigo-400 hover:text-indigo-300 hover:bg-white/10 flex items-center justify-center font-bold text-lg text-white transition-all shrink-0"
                                                     >
                                                         -
                                                     </button>
@@ -215,17 +216,17 @@ export const ShiftConfiguration: React.FC = () => {
                                                         min="0"
                                                         value={localConfig[shiftName]}
                                                         onChange={(e) => updateLocalConfig(shiftName, Math.max(0, parseInt(e.target.value) || 0))}
-                                                        className="flex-1 text-center font-bold text-xl py-1.5 rounded-lg border-gray-200 bg-white shadow-inner focus:ring-2 focus:ring-indigo-500 outline-none"
+                                                        className="flex-1 min-w-[60px] text-center font-bold text-xl py-1.5 rounded-lg border border-white/10 bg-black/20 text-white shadow-inner focus:ring-2 focus:ring-indigo-500/50 outline-none"
                                                     />
                                                     <button
                                                         onClick={() => updateLocalConfig(shiftName, localConfig[shiftName] + 1)}
-                                                        className="w-10 h-10 rounded-lg bg-gray-50 border border-gray-200 hover:border-indigo-500 hover:text-indigo-600 flex items-center justify-center font-bold text-lg transition-all"
+                                                        className="w-10 h-10 rounded-lg bg-white/5 border border-white/10 hover:border-indigo-400 hover:text-indigo-300 hover:bg-white/10 flex items-center justify-center font-bold text-lg text-white transition-all shrink-0"
                                                     >
                                                         +
                                                     </button>
                                                 </>
                                             ) : (
-                                                <div className="w-full text-center font-bold text-2xl py-2 text-gray-800 bg-gray-100 rounded-lg border border-transparent">
+                                                <div className="w-full text-center font-bold text-3xl py-3 text-white bg-white/5 rounded-xl border border-white/5">
                                                     {currentConfig[shiftName]}
                                                 </div>
                                             )}
@@ -235,15 +236,15 @@ export const ShiftConfiguration: React.FC = () => {
                             ))}
                         </div>
 
-                        <div className="mt-8 p-4 bg-indigo-50 rounded-xl border border-indigo-100 flex justify-between items-center">
-                            <div className="flex gap-8">
+                        <div className="mt-8 p-6 bg-indigo-500/10 rounded-2xl border border-indigo-500/20 flex justify-between items-center backdrop-blur-sm">
+                            <div className="flex gap-12">
                                 <div>
-                                    <span className="block text-sm text-indigo-600 font-medium">Team Size</span>
-                                    <span className="text-2xl font-bold text-indigo-900">{totalUsers}</span>
+                                    <span className="block text-sm text-indigo-300 font-medium mb-1">Team Size</span>
+                                    <span className="text-3xl font-bold text-white">{totalUsers}</span>
                                 </div>
                                 <div>
-                                    <span className="block text-sm text-indigo-600 font-medium">Assigned Slots</span>
-                                    <span className="text-2xl font-bold text-indigo-900">{totalRequired}</span>
+                                    <span className="block text-sm text-indigo-300 font-medium mb-1">Assigned Slots</span>
+                                    <span className="text-3xl font-bold text-white">{totalRequired}</span>
                                 </div>
                             </div>
                         </div>
